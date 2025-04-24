@@ -108,7 +108,18 @@ interface data-collection {
 
     enum http-method { GET, PUT, POST, DELETE }
 
+    record auth-request {
+        method: http-method,
+        url: string,
+        headers: dict,
+        token-duration: s64,
+        token-response-property: string,
+        body: string,
+    }
+
     page: func(e: event, settings: dict) -> result<edgee-request, string>;
     track: func(e: event, settings: dict) -> result<edgee-request, string>;
     user: func(e: event, settings:dict) -> result<edgee-request, string>;
+    authenticate: func(settings: dict) -> result<option<auth-request>, string>;
+    require-auth: func() -> bool;
 }
