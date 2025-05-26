@@ -1,4 +1,4 @@
-package edgee:components;
+package edgee:components@1.0.1;
 
 interface data-collection {
     type dict = list<tuple<string,string>>;
@@ -108,7 +108,20 @@ interface data-collection {
 
     enum http-method { GET, PUT, POST, DELETE }
 
+    @since(version = 1.0.1)
+    record auth-request {
+        method: http-method,
+        url: string,
+        headers: dict,
+        token-duration: s64,
+        response-token-property-name: option<string>, // Which property to cache and send in the db
+        component-token-setting-name: string, // What the token settings is called in the component
+        body: string,
+    }
+
     page: func(e: event, settings: dict) -> result<edgee-request, string>;
     track: func(e: event, settings: dict) -> result<edgee-request, string>;
     user: func(e: event, settings:dict) -> result<edgee-request, string>;
+    @since(version = 1.0.1)
+    authenticate: func(settings: dict) -> result<option<auth-request>, string>;
 }
